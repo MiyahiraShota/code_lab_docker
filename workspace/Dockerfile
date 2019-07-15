@@ -1,13 +1,15 @@
-ARG AMZN_LINUX_VER
+ARG WS_OS
 
-FROM amazonlinux:${AMZN_LINUX_VER}
+FROM ${WS_OS}
+
+USER root
 
 ############
 # yum update:
 ############
-USER root
 RUN yum -y update
 RUN yum clean all
+RUN yum install -y sudo
 
 # Development Tools install
 RUN yum -y groupinstall "Development Tools"
@@ -15,6 +17,7 @@ RUN yum -y groupinstall "Development Tools"
 ############
 # PHP:
 ############
+RUN yum -y install http://rpms.famillecollet.com/enterprise/remi-release-7.rpm
 ARG PHP_VER
 RUN yum -y install \
     php${PHP_VER} \
@@ -26,17 +29,16 @@ RUN yum -y install \
 ############
 # Composer:
 ############
-RUN curl -sS https://getcomposer.org/installer | php
+RUN curl -sS https://getcomposer.org/installer | php${PHP_VER}
 RUN mv composer.phar /usr/local/bin/composer
-
 
 ############
 # nvm node npm :
 ############
-RUN curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
-RUN export NVM_DIR="$HOME/.nvm"
-RUN [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
-RUN nvm install --lts
-RUN nvm use --lts
+
+RUN curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.29.0/install.sh | bash
+ENV NODE_VERSION 10.16.0
+ENV NVM_DIR /home/${USER}/.nvm
+RUN . ~/.nvm/nvm.sh && nvm install $NODE_VERSION && nvm alias default $NODE_VERSION && npm install -g gulp yo hubot coffee-script browserify
 
 WORKDIR /var/www

@@ -16,7 +16,7 @@ services:
         build:
             context: "${WORKSPACE_PATH}"
             args:
-                - AMZN_LINUX_VER=${AMZN_LINUX_VER}
+                - WS_OS=${WS_OS}
                 - PHP_VER=${PHP_VER}
         volumes:
             - "${WORKSPACE_PATH}:/var/www"
