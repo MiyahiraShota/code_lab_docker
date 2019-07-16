@@ -1,4 +1,4 @@
-AMZN_LINUX_VER=2018.03.0.20190212
+WS_OS=centos:centos7
 DATA_PATH=./data
 APP_CODE_PATH_CONTAINER=/var/www
 APP_CODE_CONTAINER_FLAG=:cached
@@ -14,10 +14,10 @@ WORKSPACE_PATH=./workspace
 ##### PHP #####
 
 # workspace用
-PHP_VER=56
+PHP_VER=72
 
 # サーバーのPHPのバージョンはimgae基準
-PHP_IMAGE=5.6-fpm
+PHP_IMAGE=7.2-fpm
 
 ##### MySQL #####
 
